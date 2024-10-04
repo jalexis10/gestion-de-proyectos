@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_PATH = "D:/Ucaldas inge/CUARTO SEMESTRE/GESTION DE PROYECTOS/gestion-proyecto"
-        JAR_FILE = "gestion-proyectos.jar"  // Asegúrate de que coincida con el nombre del .jar generado
+        WAR_FILE = "gestion-de-proyectos-0.0.1-SNAPSHOT.war"  // Cambiar JAR_FILE a WAR_FILE
     }
 
     stages {
@@ -23,8 +23,10 @@ pipeline {
             steps {
                 script {
                     sh "mkdir -p ${DEPLOY_PATH}"
-                    sh "cp target/${JAR_FILE} ${DEPLOY_PATH}/${JAR_FILE}"
-                    sh "nohup java -jar ${DEPLOY_PATH}/${JAR_FILE} --spring.devtools.restart.enabled=true --spring.devtools.livereload.enabled=true > ${DEPLOY_PATH}/app.log 2>&1 &"
+                    // Copiar el archivo .war al directorio de despliegue
+                    sh "cp target/${WAR_FILE} ${DEPLOY_PATH}/${WAR_FILE}"
+                    // Aquí puedes incluir la lógica para desplegar en un servidor (ej. Tomcat)
+                    // Este comando puede variar dependiendo de cómo quieras desplegar el .war
                 }
             }
         }
