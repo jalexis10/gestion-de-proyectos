@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_PATH = "D:/Ucaldas inge/CUARTO SEMESTRE/GESTION DE PROYECTOS/gestion-proyecto"
-        WAR_FILE = "gestion-de-proyectos-0.0.1-SNAPSHOT.war"  // Cambiar JAR_FILE a WAR_FILE
+        WAR_FILE = "gestion-de-proyectos-0.0.1-SNAPSHOT.war"  // Asegúrate de que coincida con el nombre del .war generado
     }
 
     stages {
@@ -22,11 +22,12 @@ pipeline {
         stage('Desplegar y Actualizar Aplicación') {
             steps {
                 script {
-                    sh "mkdir -p ${DEPLOY_PATH}"
+                    sh "mkdir -p ${DEPLOY_PATH}"  // Crear el directorio si no existe
                     // Copiar el archivo .war al directorio de despliegue
                     sh "cp target/${WAR_FILE} ${DEPLOY_PATH}/${WAR_FILE}"
                     // Aquí puedes incluir la lógica para desplegar en un servidor (ej. Tomcat)
-                    // Este comando puede variar dependiendo de cómo quieras desplegar el .war
+                    // Por ejemplo:
+                    sh "cp ${DEPLOY_PATH}/${WAR_FILE} $TOMCAT_HOME/webapps/"
                 }
             }
         }
