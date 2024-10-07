@@ -15,7 +15,7 @@ public class GestionDeProyectosApplication {
 	}
 
 	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = " si") String name) {
+	public String hello(@RequestParam(value = "name", defaultValue = " no") String name) {
 		return String.format("Hello %s!", name);
 	}
 }
