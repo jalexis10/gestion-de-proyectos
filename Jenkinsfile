@@ -5,27 +5,28 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES') // Limita el tiempo de ejecución del pipeline a 10 minutos.
     }
 
-    environment {
-        MAVEN_OPTS = '-Xmx1024m' // Configura opciones de Maven, como memoria máxima.
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Descarga el código fuente del repositorio.
-                git branch: 'main', url: 'https://github.com/jalexis10/gestion-de-proyectos.git'
+                // Clona el repositorio en la rama principal.
+                git branch: 'main', url: 'https://github.com/jalexis10/tu-repositorio.git'
             }
         }
         stage('Build') {
             steps {
-                // Realiza la limpieza y construcción del proyecto con Maven.
-                bat 'mvn clean install -DskipTests'
+                // Instala las dependencias y construye el proyecto.
+                sh 'npm install && npm run build'
             }
         }
-        stage('Run') {
+        stage('Deploy') {
             steps {
-                // Inicia la aplicación Spring Boot.
-                bat 'mvn spring-boot:run'
+                script {
+                    // Despliega la aplicación en el servidor remoto.
+                    ssh 'username@your_server', '''
+                        cd /var/www/html
+                        git pull origin main
+                    '''
+                }
             }
         }
     }
@@ -36,7 +37,7 @@ pipeline {
             cleanWs(deleteDirs: true, disableDeferredWipeout: true)
         }
         success {
-            echo 'Build y ejecución completadas exitosamente.'
+            echo 'Despliegue completado exitosamente.'
         }
         failure {
             echo 'El pipeline ha fallado.'
