@@ -19,23 +19,21 @@ pipeline {
         stage('Build') {
             steps {
                 // Realiza la limpieza y construcción del proyecto con Maven.
-                // Se usa 'bat' en lugar de 'sh' para ejecutar comandos en Windows.
                 bat 'mvn clean install -DskipTests'
             }
         }
         stage('Run') {
             steps {
-                // Inicia la aplicación Spring Boot en segundo plano.
-                // Se usa 'bat' con 'start /b' para ejecutar en segundo plano en Windows.
-                bat 'start /b mvn spring-boot:run'
+                // Inicia la aplicación Spring Boot.
+                bat 'mvn spring-boot:run'
             }
         }
     }
 
     post {
         always {
-            // Limpia los recursos generados en cada ejecución (opcional).
-            cleanWs()
+            // Limpia el workspace al final de la ejecución.
+            cleanWs(deleteDirs: true, disableDeferredWipeout: true)
         }
         success {
             echo 'Build y ejecución completadas exitosamente.'
